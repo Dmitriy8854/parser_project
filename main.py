@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import asyncio
 import aiohttp
+from aiohttp import ClientSession
 import re
 # https://qgold.com/pl/Jewelry-Rings-Adjustable
 
@@ -37,6 +38,14 @@ async def get_page_data(session):
         tovar2 = soup.css.select("span")
         print(tovar2)
         
+async with session.get(url=url) as response:
+    response_text = await response.text()
+    soup = BeautifulSoup(await response_text, 'html.parser')
+    #contain = soup.find('div', class_='products')
+    tovar2 = soup.css.select("span")
+    print(tovar2)
+
+
 #def main():
 #    asyncio.run(get_page_data(session=w))
 asyncio.run(get_page_data())
