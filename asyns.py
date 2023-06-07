@@ -66,7 +66,18 @@ async def main():
     ]
 
     results = await asyncio.gather(*tasks2)
-  
+
+
+    def func(rings, key_1, key_2):
+        list_empty = []
+        for ring in rings:
+            value = ring.get(key_1).get(key_2)
+            list_empty.append(value)
+        return list_empty  
+
+    
+
+
 
 
 transformer_url = (results['IndexedProducts']['Results'])
