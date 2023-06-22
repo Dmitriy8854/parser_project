@@ -1,6 +1,8 @@
 import asyncio
 import aiohttp
 import xlsxwriter
+
+
 async def perform_get_request(url):
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as response:
@@ -12,38 +14,11 @@ async def perform_post_request(url, data):
             return await response.text()
 
 
-
-
-# base_api_url='https://jewelers.services/productcore/api'
-
-# post_url = base_api_url + '/pl/Jewelry-Rings-2%C2%B7Stone-Rings'
-# post_data = {
-#         "filters": [{"key": "ItemsPerPage", "value": "360"}],
-#         "page": 1,
-#         "path": "Jewelry-Rings-2·Stone-Rings",
-#         "sortCode": 5
-#     }
-
-
-# response = perform_post_request(post_url, post_data) #5 секунд
-# transformer_url = (response['IndexedProducts']['Results'])
-# list_url = []
-
-# for url_detal in transformer_url:
-#     get_url = base_api_url + "/pd/" + url_detal['URLDescription'] + "/" + url_detal['Style']
-#     response_detail = perform_get_request(get_url)
-#     list_url.append(response_detail)#вся информация по кольцам
-
 base_api_url='https://jewelers.services/productcore/api'
 
 
-
 async def main():
- #  root_categories = ['https://jewelers.services/productcore/api/pl/Jewelry-Rings-2%C2%B7Stone-Rings']
     root_categories = ['https://jewelers.services/productcore/api/pl/Jewelry-Rings-2%C2%B7Stone-Rings']
-
- #   get_url = 'https://jsonplaceholder.typicode.com/posts/1'
-
     post_url = root_categories[0]
     post_data = {
         "filters": [{"key": "ItemsPerPage", "value": "360"}],
@@ -51,20 +26,15 @@ async def main():
         "path": "Jewelry-Rings-2·Stone-Rings",
         "sortCode": 5
     }
-
     tasks = [
-#        asyncio.create_task(perform_get_request(get_url)),
         asyncio.create_task(perform_post_request(post_url, data=post_data))
     ]
     results = await asyncio.gather(*tasks)
-#    print(f"GET response: {results[0]}")
     print(f"POST response: {results[0]}")
     
     tasks2 = [
-#        asyncio.create_task(perform_get_request(get_url)),
         asyncio.create_task(perform_get_request(post_url))
     ]
-
     results = await asyncio.gather(*tasks2)
 
 
@@ -74,10 +44,6 @@ async def main():
             value = ring.get(key_1).get(key_2)
             list_empty.append(value)
         return list_empty  
-
-    
-
-
 
 
 transformer_url = (results['IndexedProducts']['Results'])
@@ -140,17 +106,17 @@ async def func_video(rings, key_1, key_2):
 
 list_for_excel =[]
 
-task_3 = [
-    list_for_excel.append(asyncio.create_task(func(list_url, 'Product', 'Size'))),
-    list_for_excel.append(asyncio.create_task(func(list_url, 'Product', 'MSRP'))),
-    list_for_excel.append(asyncio.create_task(func_image(list_url, 'Product', 'Image'))),
-    list_for_excel.append(asyncio.create_task(func(list_url, 'Product', 'AvailabilityText'))),
-    list_for_excel.append(asyncio.create_task(func_video(list_url, 'Video', 'FileName'))),
-    list_for_excel.append(asyncio.create_task(func(list_url, 'Product', 'CountryOfOrigin'))),
-    for i in range(20):
-        list_for_excel.append(asyncio.create_task(func2(list_url, i)))
+# task_3 = [
+#     list_for_excel.append(asyncio.create_task(func(list_url, 'Product', 'Size'))),
+#     list_for_excel.append(asyncio.create_task(func(list_url, 'Product', 'MSRP'))),
+#     list_for_excel.append(asyncio.create_task(func_image(list_url, 'Product', 'Image'))),
+#     list_for_excel.append(asyncio.create_task(func(list_url, 'Product', 'AvailabilityText'))),
+#     list_for_excel.append(asyncio.create_task(func_video(list_url, 'Video', 'FileName'))),
+#     list_for_excel.append(asyncio.create_task(func(list_url, 'Product', 'CountryOfOrigin'))),
+#     for i in range(20):
+#         list_for_excel.append(asyncio.create_task(func2(list_url, i)))
 
-]
+# ]
     # Вывод данных в ексель
 with xlsxwriter.Workbook('rtrt1.xlsx') as workbook:
     worksheet = workbook.add_worksheet()

@@ -100,3 +100,6 @@ with xlsxwriter.Workbook('rtrt1.xlsx') as workbook:
 
     for row_num, info in enumerate(list_for_excel):
         worksheet.write_row(row_num, 0, info)
+
+
+
